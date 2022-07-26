@@ -7,7 +7,7 @@ public class SchoolGirl extends Pupil{
     }
 
     public void printOutfit() {
-        System.out.println( "Outfit: Biala bluzka z krawatem (opcjonalnie dodatkowo granatowy lub czarny sweterek, "
-                + "granatowa (lub czarna) spodniczka, plaskie obuwie" );
+        System.out.println( "Outfit: White blouse with a tie (optional navy blue or black sweater, "
+                 + "navy blue (or black) skirt, flat shoes" );
     }
 }
