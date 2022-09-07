@@ -3,8 +3,8 @@ package si;
 public class SI {
     public static double evaporation_rate = 0.4;
     public static double number_of_ants_factor = 0.5;
-    public static int alpha = 4;
-    public static int beta = 7;
+    public static int alpha = 2;
+    public static int beta = 1;
     public static int total_iterations = 1000;
 
 
@@ -22,7 +22,7 @@ public class SI {
     public static Ant get_best(Colony c, Ant previous_best_ant){
         Ant best_ant = previous_best_ant;
         for (Ant ant : c.colony){
-            int distance_traveled = (int) ant.get_distance_travelled();
+            double distance_traveled = ant.get_distance_travelled();
             if( best_ant == null){
                 best_ant = ant;
             }
@@ -42,7 +42,6 @@ public class SI {
                 ants_colony.move_ants();
             }
             updatePheromones(evaporation_rate, ants_colony);
-            System.out.println(best_ant);
             best_ant = get_best(ants_colony, best_ant);
 
         }

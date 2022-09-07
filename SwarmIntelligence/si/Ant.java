@@ -12,7 +12,11 @@ public class Ant {
     ArrayList<Integer> visited_attractions = new ArrayList<Integer>(); //list of visited attractions
     ArrayList<Integer> possible_attractions = new ArrayList<Integer>();
     ArrayList<Integer> all_attractions = new ArrayList<Integer>();
-    int BestDistance;
+    double BestDistance;
+
+    private ArrayList possible_indexes = new ArrayList<>();
+    private double[] possible_probabilities;
+    private double total_probabilities;
 
 
     Ant(int attraction_count){
@@ -44,23 +48,10 @@ public class Ant {
                 total_distance += actualCity.distanceTo(nextCity);
             }
         }
-        BestDistance = (int) total_distance;
+        BestDistance = total_distance;
         return total_distance;
     }
 
-
-    //functions
-
-    // pheromone choice
-    public void visit_attraction(int[][] pheromone_trails){
-
-    }
-
-    // random choice
-    public void visit_random_attraction(){
-
-    }
-//rebuild!!!!
     // probabilistic choice
     public void visit_probabilistic_attraction(double[][] pheromone_trails, int attraction_count, int alpha, int beta){
         int current_attraction = this.visited_attractions.get(visited_attractions.size()-1);
@@ -68,7 +59,7 @@ public class Ant {
 
         possible_indexes = new ArrayList();
         possible_probabilities = new double[possible_attractions.size()];
-        total_probabilities = 0;
+        total_probabilities = 0.0;
 
 
         int index = 0;
@@ -82,34 +73,35 @@ public class Ant {
             index++;
         }
 
-        index = 0;
-        for (double probability : possible_probabilities){
-            possible_probabilities[index] = probability/total_probabilities;
-            index++;
+        for (int i = 0; i < possible_probabilities.length; i++) {
+            possible_probabilities[i] = possible_probabilities[i]/total_probabilities;
         }
+
     }
 
     // returns next chosen city: index
     public int roulette_wheel_selection(){
         ArrayList<double[]> slices = new ArrayList();
-        double[] slice = new double[3];
         double total = 0;
         for (int i = 0; i < possible_attractions.size(); i++) {
+            double[] slice = new double[3];
             slice[0] = (int)possible_indexes.get(i);
             slice[1] = total;
-            slice[2] = total+possible_probabilities[i];
+            total = total+possible_probabilities[i];
+            slice[2] = total;
             slices.add(slice);
         }
         double spin = Math.random(); //number between 0 and 1
         int result = 0;
-        for (double[] s : slices){
-            if(s[1] < spin && spin <= s[2])
-                result = (int)s[0];
+
+        for (int i = 0; i < slices.size(); i++) {
+            double[] check_slice = slices.get(i);
+            if(check_slice[1] < spin && spin <= check_slice[2])
+                result = (int)check_slice[0];
         }
+
         return result;
     }
-
-    // updates
 
     public void updatePossible_attractions(){
         for (int i = 0; i < visited_attractions.size(); i++) {
@@ -137,12 +129,4 @@ public class Ant {
         result += this.visited_attractions;
         return result;
     }
-
-
-    private ArrayList possible_indexes = new ArrayList<>();
-    private double[] possible_probabilities;
-    private int total_probabilities;
-
-
-
 }

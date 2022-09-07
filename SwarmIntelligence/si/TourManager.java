@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class TourManager {
     public static ArrayList destinationCities = new ArrayList<City>();
     public static double[][] pheromone_trails;
-    public static int[][] distance;
+    public static double[][] distance;
 
     public static void addCity(City city){
         destinationCities.add(city);
@@ -35,7 +35,7 @@ public class TourManager {
 
     public static void setDistance(){
         int size = numberOfCities();
-        distance = new int[size][size];
+        distance = new double[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if( i == j ){
@@ -44,7 +44,7 @@ public class TourManager {
                 else{
                     City firstCity = (City) destinationCities.get(i);
                     City secondCity = (City) destinationCities.get(j);
-                    distance[i][j] = (int) firstCity.distanceTo(secondCity);
+                    distance[i][j] = firstCity.distanceTo(secondCity);
                 }
             }
         }
